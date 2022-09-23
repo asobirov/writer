@@ -24,7 +24,7 @@ export const useBufferStore = create<BufferState>()(
         (set) => ({
             blocks: [{
                 id: randId(),
-                text: null,
+                text: "Hey there!",
             }],
             blockLimit: null,
 
