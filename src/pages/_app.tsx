@@ -12,42 +12,44 @@ const MyApp: AppType = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
+    // <SessionProvider session={session}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </SessionProvider>
+    // </SessionProvider>
   );
 };
 
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    return "";
-  }
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+export default MyApp;
 
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
-};
+// const getBaseUrl = () => {
+//   if (typeof window !== "undefined") {
+//     return "";
+//   }
+//   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
 
-export default withTRPC<AppRouter>({
-  config({ ctx }) {
-    /**
-     * If you want to use SSR, you need to use the server's full URL
-     * @link https://trpc.io/docs/ssr
-     */
-    const url = `${getBaseUrl()}/api/trpc`;
+//   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+// };
 
-    return {
-      url,
-      transformer: superjson,
-      /**
-       * @link https://react-query.tanstack.com/reference/QueryClient
-       */
-      // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
-    };
-  },
-  /**
-   * @link https://trpc.io/docs/ssr
-   */
-  ssr: false,
-})(MyApp);
+// export default withTRPC<AppRouter>({
+//   config({ ctx }) {
+//     /**
+//      * If you want to use SSR, you need to use the server's full URL
+//      * @link https://trpc.io/docs/ssr
+//      */
+//     const url = `${getBaseUrl()}/api/trpc`;
+
+//     return {
+//       url,
+//       transformer: superjson,
+//       /**
+//        * @link https://react-query.tanstack.com/reference/QueryClient
+//        */
+//       // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+//     };
+//   },
+//   /**
+//    * @link https://trpc.io/docs/ssr
+//    */
+//   ssr: false,
+// })(MyApp);
