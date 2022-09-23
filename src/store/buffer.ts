@@ -14,9 +14,10 @@ type AddBlockProps = Omit<Block, "id"> & Partial<Pick<Block, "id">>;
 type BufferState = {
     blocks: Block[];
     blockLimit: number | null;
-    length: number;
 
     addBlock: ({ id, text }: AddBlockProps) => void;
+    removeBlock: (id: string) => void;
+    updateBlock: (block: Block) => void;
 }
 
 export const useBufferStore = create<BufferState>()(
@@ -28,10 +29,6 @@ export const useBufferStore = create<BufferState>()(
             }],
             blockLimit: null,
 
-            // Total length of blocks
-            length: 1,
-
-            // Insert {text} at {position}
             addBlock: ({ id, text }) => {
                 set((state) => ({
                     ...state,
@@ -42,6 +39,23 @@ export const useBufferStore = create<BufferState>()(
                             text
                         }
                     ],
+                }))
+            },
+            removeBlock: (id) => {
+                set((state) => ({
+                    ...state,
+                    blocks: state.blocks.filter((block) => block.id !== id)
+                }))
+            },
+            updateBlock: (block) => {
+                set((state) => ({
+                    ...state,
+                    blocks: state.blocks.map((b) => {
+                        if (b.id === block.id) {
+                            return block;
+                        }
+                        return b;
+                    })
                 }))
             }
         })

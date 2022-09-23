@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-*, *:focus {
+*,
+*:focus {
     outline: none;
+}
+
+html {
+    font-family: "Roboto Mono", "iA Writer Mono V", Menlo, monospace;
 }
 
 body {

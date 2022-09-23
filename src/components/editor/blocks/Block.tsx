@@ -19,27 +19,13 @@ export const Block: React.FC<BlockProps> = ({
 }) => {
     const [setCurrentBlockId] = useEditorStore((store) => [store.setCurrentBlockId]);
     const [spellCheck] = useEditorConfigStore((store) => [store.spellCheck]);
-    const [addBlock] = useBufferStore((store) => [store.addBlock]);
-    const [cursors, setCursorPosition] = useCursorStore((store) => [store.cursors, store.setCursorPosition]);
+    const [addBlock, updateBlock] = useBufferStore((store) => [store.addBlock, store.updateBlock]);
 
     const blockRef = useRef<HTMLDivElement>(null);
 
     const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const { key, altKey, metaKey, shiftKey } = e;
-        console.log("KeyDown", key);
 
-        if (isCurrentBlock || e.currentTarget === document.activeElement) {
-            const selection = window.getSelection();
-            const range = selection?.getRangeAt(0);
-            const rect = range?.getBoundingClientRect();
-
-            const parent = document.querySelector(`[data-editor="true"]`)?.getBoundingClientRect();
-
-            if (rect && parent && cursors.length > 0) {
-                console.log("set cursor position", rect, parent);
-                setCursorPosition(cursors[0].id, [rect.top - parent.top, rect.left - parent.left]);
-            }
-        }
         switch (key) {
             case "Enter": {
                 if (!shiftKey) {
@@ -69,6 +55,21 @@ export const Block: React.FC<BlockProps> = ({
         }
     }
 
+    const onFocusHandler = (e: React.FocusEvent<HTMLDivElement>) => {
+    }
+
+    const onBlurHandler = (e: React.FocusEvent<HTMLDivElement>) => {
+    }
+
+    const onInputHandler = (e: React.FormEvent<HTMLDivElement>) => {
+        console.log("onInput", e.currentTarget.innerText);
+        const { textContent } = e.currentTarget;
+        updateBlock({
+            id: blockConfig.id,
+            text: textContent,
+        });
+    }
+
     useEffect(() => {
         if (isCurrentBlock) {
             blockRef.current?.focus();
@@ -87,6 +88,9 @@ export const Block: React.FC<BlockProps> = ({
 
             ref={blockRef}
             onKeyDown={onKeyDownHandler}
+            onFocus={onFocusHandler}
+            onBlur={onBlurHandler}
+            onInput={onInputHandler}
         >
             {children}
         </div>
