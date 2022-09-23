@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #111;
+    color: #FFF;
+}
+
+#__next {
+    display: flex;
+    min-height: 100vh;
+}
+
+@layer utilities {
+    .word-break-word {
+        word-break: break-word;
+    }
+}
