@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*, *:focus {
+    outline: none;
+}
+
 body {
     background: #111;
     color: #FFF;
