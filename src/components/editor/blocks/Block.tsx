@@ -1,10 +1,7 @@
 import { Block as TBlock, useBufferStore } from "@store/buffer";
-import { useCursorStore } from "@store/cursor";
 import { useEditorConfigStore, useEditorStore } from "@store/editor";
-import { getSelectionCoords } from "@utils/getSelectCords";
 import { randId } from "@utils/randId";
-import { useCaretPosition } from "hooks/useCaretPostition";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 type BlockProps = {
     children: React.ReactNode;
@@ -62,13 +59,17 @@ export const Block: React.FC<BlockProps> = ({
     }
 
     const onInputHandler = (e: React.FormEvent<HTMLDivElement>) => {
-        console.log("onInput", e.currentTarget.innerText);
+        e.preventDefault();
         const { textContent } = e.currentTarget;
         updateBlock({
             id: blockConfig.id,
             text: textContent,
         });
     }
+
+    useLayoutEffect(() => {
+
+    })
 
     useEffect(() => {
         if (isCurrentBlock) {
@@ -78,7 +79,7 @@ export const Block: React.FC<BlockProps> = ({
 
     return (
         <div
-            className="max-w-full w-full whitespace-pre-wrap word-break-word no-overflow-anchor caret-red-800"
+            className="max-w-full w-full whitespace-pre-wrap word-break-word caret-red-800"
             placeholder="Type here..."
             spellCheck={spellCheck}
             contentEditable
@@ -90,7 +91,7 @@ export const Block: React.FC<BlockProps> = ({
             onKeyDown={onKeyDownHandler}
             onFocus={onFocusHandler}
             onBlur={onBlurHandler}
-            onInput={onInputHandler}
+            // onInput={onInputHandler}
         >
             {children}
         </div>

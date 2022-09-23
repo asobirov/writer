@@ -1,5 +1,3 @@
-import { useCursorStore } from "@store/cursor";
-import { getSelectionCoords } from "@utils/getSelectCords";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 
@@ -12,25 +10,17 @@ const Cursor = dynamic(() => import("@components/cursor/Cursor"), {
 });
 
 export default function Editor() {
-    const [cursors, setCursorPosition] = useCursorStore((store) => [store.cursors, store.setCursorPosition]);
-
     const editorRef = useRef<HTMLDivElement>(null);
 
-    const updateCursor = () => {
-        const coords = getSelectionCoords(true);
-        const parent = editorRef.current?.getBoundingClientRect();
-
-        if (coords && parent && cursors.length > 0) {
-            setCursorPosition(cursors[0].id, [coords.top - parent.top, coords.left - parent.left]);
-        }
-    }
 
     return (
-        <div className="flex flex-1 relative" ref={editorRef} onMouseDown={updateCursor} onKeyDown={updateCursor}>
+        <div className="flex flex-1 relative" ref={editorRef}>
             <div className="relative w-full cursor-text" data-editor>
                 <Blocks />
             </div>
-            <Cursor />
+            <div>
+                <Cursor parentRef={editorRef} />
+            </div>
         </div>
     );
 }
