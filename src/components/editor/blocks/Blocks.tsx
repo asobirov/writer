@@ -1,7 +1,6 @@
 import { useBufferStore } from "@store/buffer";
-import { useCursorStore } from "@store/cursor";
 import { useEditorStore } from "@store/editor";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { Block } from "./Block";
 
 const Blocks: React.FC = () => {
